@@ -15,8 +15,7 @@
                 If hRes = 0 Then
                     Dim bAlgorithm(pcbValue - 1) As Byte
                     Marshal.Copy(ppbValue, bAlgorithm, 0, pcbValue)
-                    Debug.Print(BitConverter.ToString(bAlgorithm))
-                    Debug.Print(Encoding.UTF8.GetString(bAlgorithm, 0, bAlgorithm.Length))
+                    ......
                 End If
                 Marshal.FreeHGlobal(pData)
                 Dim addrStart() As Byte = New Byte() {&H6C, &HF1, &HA, &H13, &H1, &H0, &H0, &H0, &H2A, &H0, &H0, &H0, &H4, &H0, &H0, &H0}
@@ -42,6 +41,7 @@
                     Dim bAlgorithm(pcbValue) As Byte
                     Marshal.Copy(ppbValue, bAlgorithm, 0, pcbValue)
                     Dim index = SearchBytePattern(Encoding.Unicode.GetBytes("PublishLicense"), bAlgorithm)
+                    ......
                 End If
                 Marshal.FreeHGlobal(pData)
 ```
