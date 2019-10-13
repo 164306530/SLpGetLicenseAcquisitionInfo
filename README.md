@@ -7,9 +7,9 @@
 ```
 ```c
                 Dim pData As IntPtr = Marshal.AllocHGlobal(&H40)
-                Dim bytes1() As Byte = {&H55, &H45, &HED, &HEA, &H1, &H0, &H0, &H0, &H22, &H0, &H0, &H0, &H4, &H0, &H0, &H0}
-                Dim bytes2() As Byte = {&H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H1, &H0, &H0, &H0, &H0, &H0, &H0, &H0}
-                Dim bData = ConcatByteArrays(bytes1, Encoding.Unicode.GetBytes("SppLAPPingServer"), bytes2)
+                Dim offsetStart() As Byte = {&H55, &H45, &HED, &HEA, &H1, &H0, &H0, &H0, &H22, &H0, &H0, &H0, &H4, &H0, &H0, &H0}
+                Dim addrSppLAPPingServer() As Byte = {&H0, &H0, &H0, &H0, &H0, &H0, &H0, &H0, &H1, &H0, &H0, &H0, &H0, &H0, &H0, &H0}
+                Dim bData = ConcatByteArrays(offsetStart, Encoding.Unicode.GetBytes("SppLAPPingServer"), addrSppLAPPingServer)
                 Marshal.Copy(bData, 0, pData, bData.Length)
                 Dim hRes = SLpGetLicenseAcquisitionInfo(hSLC, Marshal.StringToHGlobalUni("msft:spp/licenseacquisition/payloadhandler/pa/1.0"), &H40, pData, New SLDATATYPE, pcbValue, ppbValue)
                 If hRes = 0 Then
@@ -19,12 +19,12 @@
                     Debug.Print(Encoding.UTF8.GetString(bAlgorithm, 0, bAlgorithm.Length))
                 End If
                 Marshal.FreeHGlobal(pData)
-                Dim byte1() As Byte = New Byte() {&H6C, &HF1, &HA, &H13, &H1, &H0, &H0, &H0, &H2A, &H0, &H0, &H0, &H4, &H0, &H0, &H0}
-                Dim byte2() As Byte = New Byte() {&H83, &H42, &H87, &H86, &H2, &H0, &H0, &H0}
-                Dim byte3() As Byte = New Byte() {&H18, &H0, &H0, &H0, &H4A, &H0, &H0, &H0}
-                Dim byte4() As Byte = New Byte() {&H55, &HD6, &HAB, &H7C, &H1, &H0, &H0, &H0, &H1A, &H0, &H0, &H0, &H4, &H0, &H0, &H0}
-                Dim byte5() As Byte = New Byte() {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0}
-                bData = ConcatByteArrays(byte1, Encoding.Unicode.GetBytes("SppLAPActivationType"), Encoding.ASCII.GetBytes(New String(ChrW(0), 16)), byte2, byte3, Encoding.Unicode.GetBytes("SppLAPSkuId" + ChrW(0) + pSkuId.ToString), Encoding.ASCII.GetBytes(New String(ChrW(0), 8)), byte4, Encoding.Unicode.GetBytes("SppRequirePL"), byte5)
+                Dim addrStart() As Byte = New Byte() {&H6C, &HF1, &HA, &H13, &H1, &H0, &H0, &H0, &H2A, &H0, &H0, &H0, &H4, &H0, &H0, &H0}
+                Dim addrSppLAPActivationType() As Byte = New Byte() {&H83, &H42, &H87, &H86, &H2, &H0, &H0, &H0}
+                Dim byte1() As Byte = New Byte() {&H18, &H0, &H0, &H0, &H4A, &H0, &H0, &H0}
+                Dim byte2() As Byte = New Byte() {&H55, &HD6, &HAB, &H7C, &H1, &H0, &H0, &H0, &H1A, &H0, &H0, &H0, &H4, &H0, &H0, &H0}
+                Dim addrSppRequirePL() As Byte = New Byte() {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0}
+                bData = ConcatByteArrays(addrStart, Encoding.Unicode.GetBytes("SppLAPActivationType"), Encoding.ASCII.GetBytes(New String(ChrW(0), 16)), addrSppLAPActivationType, byte1, Encoding.Unicode.GetBytes("SppLAPSkuId" + ChrW(0) + pSkuId.ToString), Encoding.ASCII.GetBytes(New String(ChrW(0), 8)), byte2, Encoding.Unicode.GetBytes("SppRequirePL"), addrSppRequirePL)
                 Debug.Print(String.Join(String.Empty, Array.ConvertAll(bData, Function(x) x.ToString("X2") & " ")))
                 pData = Marshal.AllocHGlobal(&HF8)
                 Marshal.Copy(bData, 0, pData, bData.Length)
